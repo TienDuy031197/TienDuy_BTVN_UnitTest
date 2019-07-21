@@ -34,7 +34,7 @@ public class MailHandler extends GeneralHandlerAbstract implements ReadMailInter
     public static void main(String[] args) {
         BasicConfigurator.configure();
         MailHandler mailHandler = new MailHandler(Config.PROTOCOL_IMAP, Config.HOST_IMAP, Config.PORT_IMAP, Config.USER_NAME, Config.PASS);
-        mailHandler.setSaveDirectory("D:/project_java/");
+        mailHandler.setSaveDirectory(Config.DOWNLOAD_PATH);
         mailHandler.readMail();
     }
 
@@ -68,7 +68,7 @@ public class MailHandler extends GeneralHandlerAbstract implements ReadMailInter
             store.connect(userName, passWord);
 
             // opens the inbox folder
-            Folder folderInbox = store.getFolder("INBOX");
+            Folder folderInbox = store.getFolder(Config.GET_FOLDER_EMAIL);
             folderInbox.open(Folder.READ_ONLY);
 
             // fetches new messages from server
@@ -90,7 +90,6 @@ public class MailHandler extends GeneralHandlerAbstract implements ReadMailInter
                     for (int partCount = 0; partCount < numberOfParts; partCount++) {
                         BodyPart part = multiPart.getBodyPart(partCount);
                         if (isFileZip(part)) {
-
                             String fileName = part.getFileName();
                             String extension = fileName.substring(fileName.lastIndexOf('.'));
                             if (extension.equalsIgnoreCase(Config.EXTENSION_ZIP)) {
@@ -140,7 +139,7 @@ public class MailHandler extends GeneralHandlerAbstract implements ReadMailInter
             while ((byteRead = input.read(buffer)) != -1) {
                 output.write(buffer, 0, byteRead);
             }
-            LOGGER.debug("Download success!");
+            LOGGER.info("Download success!");
         } catch (FileNotFoundException e) {
             LOGGER.error(e.getMessage());
         } catch (MessagingException e) {
@@ -184,7 +183,7 @@ public class MailHandler extends GeneralHandlerAbstract implements ReadMailInter
             // sends the e-mail
             Transport.send(msg);
         } catch (MessagingException e) {
-            LOGGER.debug("Send mail failed!");
+            LOGGER.error(e.getMessage());
         }
     }
 

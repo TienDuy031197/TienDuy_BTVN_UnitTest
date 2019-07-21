@@ -15,6 +15,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class FileHandler extends GeneralHandlerAbstract implements HandlerFileInterface {
+    private static final int LENGHT_BYTE = 10240;
     private static final Logger LOGGER = Logger.getLogger(MailHandler.class.getName());
 
     private String addressTo;
@@ -34,7 +35,7 @@ public class FileHandler extends GeneralHandlerAbstract implements HandlerFileIn
             folder.mkdirs();
         }
         //Create a buffer.
-        byte[] buffer = new byte[10 * 1024];
+        byte[] buffer = new byte[LENGHT_BYTE];
         ZipInputStream zipIs = null;
         try {
             // Create ZipInputStream object to read file from a path (path).
@@ -45,7 +46,7 @@ public class FileHandler extends GeneralHandlerAbstract implements HandlerFileIn
                 String entryName = entry.getName();
                 if ((entry = zipIs.getNextEntry()) != null) {
                     sendMail(addressTo, Config.TOPIC_SEND, Config.SINGLE_FILE);
-                    LOGGER.info("Send mail success! " + Config.SINGLE_FILE);
+                    LOGGER.info(Config.SEND_SUCCESS + Config.SINGLE_FILE);
                     break;
                 }
                 String extension = entryName.substring(entryName.lastIndexOf('.'));
@@ -65,7 +66,7 @@ public class FileHandler extends GeneralHandlerAbstract implements HandlerFileIn
                             fos.write(buffer, 0, len);
                         }
                         fos.close();
-                        Autodot();
+                        autoDot();
                     }
                 } else {
                     sendMail(addressTo, Config.TOPIC_SEND, Config.FILE_JAVA);
@@ -100,7 +101,6 @@ public class FileHandler extends GeneralHandlerAbstract implements HandlerFileIn
             msg.setText(message);
             // sends the e-mail
             Transport.send(msg);
-            LOGGER.info(Config.SEND_SUCCESS);
         } catch (MessagingException e) {
             LOGGER.error(e.getMessage());
         }
@@ -127,18 +127,18 @@ public class FileHandler extends GeneralHandlerAbstract implements HandlerFileIn
         return authen;
     }
 
-    private void Autodot(){
-        Integer[] a = {1,2,3,4,5,6,7,8,9,10};
-        Integer[] b = {10,9,8,7,6,5,4,3,2,1};
-        Integer[] result = {11,11,11,11,11,11,11,11,11,11};
+    private void autoDot() {
+        Integer[] a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        Integer[] b = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+        Integer[] result = {11, 11, 11, 11, 11, 11, 11, 11, 11, 11};
         Integer totalScore = 0;
-        for (int i=0;i<10;i++){
-            AddNumber addNumber = new AddNumber(a[i],b[i]);
-            if(addNumber.add() == result[i]){
+        for (int i = 0; i < 10; i++) {
+            AddNumber addNumber = new AddNumber(a[i], b[i]);
+            if (addNumber.add() == result[i]) {
                 totalScore += 1;
             }
         }
-        sendMail(addressTo,Config.RESULT,Config.MESSAGE_RESULT+totalScore);
-        LOGGER.info("Score: "+totalScore);
+        sendMail(addressTo, Config.RESULT, Config.MESSAGE_RESULT + totalScore);
+        LOGGER.info("Score: " + totalScore);
     }
 }

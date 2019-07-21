@@ -10,11 +10,10 @@ public class Config {
     public static  final String USER_NAME = "nguyenco0311.97@gmail.com";
     public static  final String PASS = "duyco0311";
 
-    //config sand
+    //config send
     public static  final String HOST_SMTP = "smtp.gmail.com";
     public static  final String PORT_SMTP = "587";
-
-    public static final String EXTRACT_PATH = "D:/project_java/UnitTestEmail/src/main/java/";
+    public static final String EXTRACT_PATH = "D:/project_java/UnitTestEmail/src/main/java/UnitTest/";
 
     //config file
     public static final String SINGLE_FILE = "File contains more than one file!";
@@ -29,5 +28,7 @@ public class Config {
     public static final String NOT_RIGHT_TOPIC = "Your message is not the right topic!";
     public static final String NOT_TOPIC = "Mail sent without subject";
     public static final String MESSAGE_RESULT = "You achieved: ";
+    public static final String DOWNLOAD_PATH = "D:/project_java/";
+    public static final String GET_FOLDER_EMAIL = "INBOX";
 
 }
